@@ -47,17 +47,17 @@ export default function SearchBar({ setSelectedMovie }) {
     setSelected(0);
   }
   return (
-    <>
-      <input id='searchbar' placeholder="Search Movies" value={searchValue} onChange={e => setSearchValue(e.target.value)} onKeyDown={handleKeyDown} />
-      <ul id='dropdown-list'>
+    <div className="relative inline-block col-8">
+      <input id='searchbar' placeholder="Search Movies..." value={searchValue} onChange={e => setSearchValue(e.target.value)} onKeyDown={handleKeyDown} />
+      <ul id='dropdown-list' >
         {
           searchResults?.map((movie, i) => {
             if (movie.title)
-              return <li className={i == selected ? "selected-dropdown-value" : "dropdown-value"} key={movie.id} onClick={(e) => { setSelectedMovie(movie.id); setSearchValue(''); setSearchResults([]); }
+              return <li className={"block " + i == selected ? "selected-dropdown-value" : "dropdown-value"} key={movie.id} onClick={(e) => { setSelectedMovie(movie.id); setSearchValue(''); setSearchResults([]); }
               }> {movie.title}{getYear(movie.release_date)}</li>
           })
         }
       </ul >
-    </>
+    </div>
   );
 }

@@ -46,6 +46,8 @@ export function makeCircles(selection, movieData, drag, setSelectedMovie, keepCo
     .on('click', (e, d) => handleClick(e, d, setSelectedMovie, keepCompareOpen, movieData))
     .on('mouseenter', (e, d) => handleMouseOver(e, d, movieData))
     .on('mouseleave', (e, d) => handleMouseLeave(e, d, movieData, keepCompareOpen))
+    .on('pointerdown', (e, d) => handleMouseOver(e, d, movieData))
+    .on('pointerup', (e, d) => handleMouseLeave(e, d, movieData, keepCompareOpen))
     .enter()
     .append('circle')
     .attr('fill', d => `url(#image-${d.id})`)
@@ -55,7 +57,19 @@ export function makeCircles(selection, movieData, drag, setSelectedMovie, keepCo
     .attr('r', d => d.rad)
   return circles;
 }
-
+function wrapTitle(title) {
+  const titleArr = title.split(' ');
+  let newTitle = '';
+  let linelen = 0;
+  for (let word of titleArr) {
+    newTitle += word;
+    newTitle += '\n';
+    linelen += word.length;
+    if (linelen > 20)
+      newTitle += '\n';
+  }
+  return newTitle
+}
 export function makeTitles(selection, movieData) {
   const titles = selection
     .selectAll('text')
@@ -64,32 +78,15 @@ export function makeTitles(selection, movieData) {
     .attr('y', d => d.y - (d.rad + 5))
     .attr('text-anchor', 'middle')
     .style('visibility', d => d.visible)
-    .text(d => d.title)
     .raise()
     .enter()
     .append('text')
-    .attr('font-size', '2em')
+    .attr('font-size', '1.5em')
     .attr('fill', 'white')
     .attr('stroke', 'black')
     .style('stroke-width', '1px')
+    .attr('paint-order', 'stroke')
+    .text(d => wrapTitle(d.title))
+    .style("white-space", "pre")
   return titles;
-}
-export function makeTooltip(info) {
-  const directorsPrint = info.directors.map(member => member.name).join(', ')
-  const writersPrint = info.writers.map(member => member.name).join(', ')
-  const mainCast = info.cast.slice(0, 10);
-  const castList = mainCast.map(actor => '<li>' + actor.name + ' - ' + actor.character + '</li>').join(' ')
-  const genreList = info.genres.map(genre => genre.name).join(', ');
-  d3.select('#tooltip').style('visibility', 'visible')
-    .html(
-      '<img src=' + getTMDBImagePath(info.poster_path, 1000) + '/>'
-      + '<h1>' + info.title + info.year + '</h1>'
-      + '<p>Directed by: ' + directorsPrint + '</p>'
-      + '<p>Written by: ' + writersPrint + '</p>'
-      + '<p>Genres: ' + genreList + '</p>'
-      + '<p>' + info.description + '</p>'
-      + '<h2>Cast: </h2>'
-      + '<ul>' + castList + '</ul>'
-      + getTrailer(info.trailer)
-    )
 }

@@ -102,19 +102,18 @@ a {
   text-align: left;
 }
 
-#top-left-search {
-  position: absolute;
-}
-.wideButton{
-  width: 200px;
-  margin:auto;
-}
 #searchbar {
-  width: 300px;
   border-radius: 5px;
   border: none;
   padding: 5px;
   font-size: 1.5em;
+}
+
+button{
+  border:none;
+  padding:5px;
+  font-size:1.5em;
+  border-radius:5px;
 }
 
 .search-result {}
@@ -147,6 +146,7 @@ a {
 }
 
 #dropdown-list {
+  position: absolute;
   padding: 0;
   margin: 0;
 }

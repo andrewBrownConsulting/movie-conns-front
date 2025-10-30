@@ -2,19 +2,20 @@
 import { useState } from "react";
 import SearchBar from "./components/SearchBar";
 import SimilarGraph from "./components/SimilarGraph";
+import MovieInfo from "./components/MovieInfo";
 export default function Home() {
   const [selectedMovie, setSelectedMovie] = useState(948);
   const [keepCompareOpen, setKeepCompareOpen] = useState(false);
   return (
     <div className="container-fluid">
-      <div id='top-left-search' >
-        <h1 className="text-white">Movie Connections</h1>
+      <div className="row p-2">
         <SearchBar setSelectedMovie={setSelectedMovie} />
+        <button className="col-4" style={{ backgroundColor: keepCompareOpen ? 'green' : 'blue' }} onClick={() => setKeepCompareOpen(!keepCompareOpen)}>Comp</button>
       </div>
-      <div style={{ position: "absolute", width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <button className="wideButton" style={{ backgroundColor: keepCompareOpen ? 'green' : 'blue' }} onClick={() => setKeepCompareOpen(!keepCompareOpen)}>Keep Compare Open</button>
+      <div className="row">
+        <SimilarGraph movieId={selectedMovie} setSelectedMovie={setSelectedMovie} keepCompareOpen={keepCompareOpen} />
+        <MovieInfo />
       </div>
-      <SimilarGraph movieId={selectedMovie} setSelectedMovie={setSelectedMovie} keepCompareOpen={keepCompareOpen} />
     </div >
   );
 }

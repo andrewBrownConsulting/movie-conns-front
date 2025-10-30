@@ -1,4 +1,4 @@
-import { makeTooltip } from './d3Funcs/makeObjects';
+import { makeTooltip } from './components/MovieInfo';
 import { getMovieWithId, getSimilarMovies } from './serverFunctions';
 import { getTMDBImagePath } from './utils';
 import * as d3 from 'd3'
@@ -9,14 +9,12 @@ const maxScale = 1 / 10;
 const mainScale = 1 / 8;
 const scaleRange = 10;
 
-export async function updateSimilarMovies(movieId, cancelLoopRef, setMovieData, setLinks) {
-  const width = window.innerWidth * 2 / 3;
-  const height = window.innerHeight
+export async function updateSimilarMovies(movieId, cancelLoopRef, setMovieData, setLinks, svgRef) {
+  const width = svgRef.current.clientWidth;
+  const height = svgRef.current.clientHeight;
   function getRadius(number) {
-
     const min = width * minScale;
     const max = width * maxScale;
-
     if (number > scaleRange)
       return max;
     return min + (number / scaleRange) * (max - min);
@@ -57,8 +55,8 @@ export async function updateSimilarMovies(movieId, cancelLoopRef, setMovieData, 
 }
 
 export async function getNewMovieData(cancelLoopRef, svgRef, setMovieData, setLinks, movieId) {
-  const width = window.innerWidth * 2 / 3;
-  const height = window.innerHeight;
+  const width = svgRef.current.clientWidth;
+  const height = svgRef.current.clientHeight;
   cancelLoopRef.current = true;
   await new Promise(resolve => setTimeout(resolve, timeBetweenSpawns));
   cancelLoopRef.current = false;
@@ -80,5 +78,5 @@ export async function getNewMovieData(cancelLoopRef, svgRef, setMovieData, setLi
     }]);
     makeTooltip(res);
   });
-  updateSimilarMovies(movieId, cancelLoopRef, setMovieData, setLinks);
+  updateSimilarMovies(movieId, cancelLoopRef, setMovieData, setLinks, svgRef);
 }

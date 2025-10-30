@@ -1,11 +1,11 @@
 import * as d3 from 'd3'
 import { useEffect, useRef, useState } from 'react'
-import { getTMDBImagePath, getTrailer } from '../utils';
 import { makeSimulation } from '../d3Funcs/simulation';
 import { makeCircles, makeImages, makeLinkLines, makePatterns, makeTitles } from '../d3Funcs/makeObjects';
 import { makeDrag } from '../d3Funcs/mouseFuncs';
 import { getNewMovieData } from '../fetchFuncs';
 export default function SimilarGraph({ movieId, setSelectedMovie, keepCompareOpen }) {
+  const ref = useRef();
   const cancelLoopRef = useRef(false);
   const svgRef = useRef(null);
   const [movieData, setMovieData] = useState([]);
@@ -16,8 +16,9 @@ export default function SimilarGraph({ movieId, setSelectedMovie, keepCompareOpe
   }, [movieId]);
 
   useEffect(() => {
-    const width = window.innerWidth * 2 / 3;
-    const height = window.innerHeight;
+    const width = svgRef.current.clientWidth;
+    const height = Math.min(window.innerHeight, svgRef.current.clientWidth);
+    console.log(width)
     const selection = d3.select(svgRef.current).select('g');
     const drag = makeDrag(update);
     function update() {
@@ -36,8 +37,8 @@ export default function SimilarGraph({ movieId, setSelectedMovie, keepCompareOpe
     };
   }, [movieData.length, keepCompareOpen])
   useEffect(() => {
-    const width = window.innerWidth * 2 / 3;
-    const height = window.innerHeight;
+    const width = svgRef.current.clientWidth;
+    const height = Math.min(window.innerHeight, svgRef.current.clientWidth);
     d3.select(svgRef.current).attr('width', width).attr('height', height).select('g').remove();
     const svgd3 = d3.select(svgRef.current).attr('width', width).attr('height', height);
     svgd3.append('g').append('defs')
@@ -51,12 +52,6 @@ export default function SimilarGraph({ movieId, setSelectedMovie, keepCompareOpe
   }, [])
 
   return (
-    <div className='' id='outer_div'>
-      <div className='row'>
-        <svg className='col-8' ref={svgRef}>
-        </svg>
-        <div id='tooltip' className='col-4 overflow-scroll'></div>
-      </div>
-    </div>
+    <svg className='col-12 col-md-8' ref={svgRef} />
   )
 }
