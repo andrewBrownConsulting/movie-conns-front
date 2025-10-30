@@ -84,7 +84,7 @@ export function makeTitles(selection, movieData) {
     .attr('font-size', '1.5em')
     .attr('fill', 'white')
     .attr('stroke', 'black')
-    .style('stroke-width', '1px')
+    .style('stroke-width', '2px')
     .attr('paint-order', 'stroke')
     .text(d => wrapTitle(d.title))
     .style("white-space", "pre")

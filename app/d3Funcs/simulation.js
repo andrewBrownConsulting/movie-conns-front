@@ -1,5 +1,7 @@
 import * as d3 from 'd3'
 export function makeSimulation(movieData, width, height, links, update) {
+  console.log(movieData)
+  console.log(links)
   const simulation = d3.forceSimulation(movieData)
     .force('x', d3.forceX(width / 2).strength(0.01))
     .force('y', d3.forceY(height / 2).strength(0.01))

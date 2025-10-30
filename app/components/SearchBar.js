@@ -24,6 +24,9 @@ export default function SearchBar({ setSelectedMovie }) {
     return () => clearTimeout(delayDebounceFn);
   }, [searchValue]);
   function handleKeyDown(e) {
+
+    console.log('keydown')
+
     if (e.key == "ArrowDown") {
       e.preventDefault()
       if (selected != 9)
@@ -48,12 +51,12 @@ export default function SearchBar({ setSelectedMovie }) {
   }
   return (
     <div className="relative inline-block col-8">
-      <input id='searchbar' placeholder="Search Movies..." value={searchValue} onChange={e => setSearchValue(e.target.value)} onKeyDown={handleKeyDown} />
+      <input id='searchbar' placeholder="Search Movies..." autoComplete="off" value={searchValue} onChange={e => setSearchValue(e.target.value)} onKeyDown={handleKeyDown} />
       <ul id='dropdown-list' >
         {
           searchResults?.map((movie, i) => {
             if (movie.title)
-              return <li className={"block " + i == selected ? "selected-dropdown-value" : "dropdown-value"} key={movie.id} onClick={(e) => { setSelectedMovie(movie.id); setSearchValue(''); setSearchResults([]); }
+              return <li className={i == selected ? "selected-dropdown-value" : "dropdown-value"} key={movie.id} onClick={(e) => { setSelectedMovie(movie.id); setSearchValue(''); setSearchResults([]); }
               }> {movie.title}{getYear(movie.release_date)}</li>
           })
         }

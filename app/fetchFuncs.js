@@ -47,7 +47,7 @@ export async function updateSimilarMovies(movieId, cancelLoopRef, setMovieData, 
       , genresInCommonList
     };
     setMovieData(prev => [...prev, newItem]);
-    setLinks(prev => [...prev, { source: movieId, target: id }]);
+    setLinks(prev => [...prev, { source: '' + movieId, target: id }]);
 
     await new Promise(resolve =>
       setTimeout(resolve, timeBetweenSpawns));
@@ -67,7 +67,7 @@ export async function getNewMovieData(cancelLoopRef, svgRef, setMovieData, setLi
 
   getMovieWithId(movieId).then(res => {
     const rad = width * mainScale;
-    const id = res.id;
+    const id = '' + res.id;
     const title = res.title
     const image = getTMDBImagePath(res.poster_path, rad);
     const trailer = res.trailer;

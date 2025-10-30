@@ -5,20 +5,19 @@ import { makeCircles, makeImages, makeLinkLines, makePatterns, makeTitles } from
 import { makeDrag } from '../d3Funcs/mouseFuncs';
 import { getNewMovieData } from '../fetchFuncs';
 export default function SimilarGraph({ movieId, setSelectedMovie, keepCompareOpen }) {
-  const ref = useRef();
   const cancelLoopRef = useRef(false);
   const svgRef = useRef(null);
   const [movieData, setMovieData] = useState([]);
   const [links, setLinks] = useState([]);
 
   useEffect(() => {
-    getNewMovieData(cancelLoopRef, svgRef, setMovieData, setLinks, movieId);
+    if (movieId != null)
+      getNewMovieData(cancelLoopRef, svgRef, setMovieData, setLinks, movieId);
   }, [movieId]);
 
   useEffect(() => {
     const width = svgRef.current.clientWidth;
     const height = Math.min(window.innerHeight, svgRef.current.clientWidth);
-    console.log(width)
     const selection = d3.select(svgRef.current).select('g');
     const drag = makeDrag(update);
     function update() {
